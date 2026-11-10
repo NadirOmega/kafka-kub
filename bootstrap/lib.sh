@@ -44,7 +44,7 @@ render_image() {
   chmod 700 "$OUT"
   python3 - "$source" "$destination" "$image" <<'PY'
 import pathlib,re,sys
-src,dst,ref=map(pathlib.Path,sys.argv[1:3])+[] if False else (pathlib.Path(sys.argv[1]),pathlib.Path(sys.argv[2]),sys.argv[3])
+src,dst,ref=pathlib.Path(sys.argv[1]),pathlib.Path(sys.argv[2]),sys.argv[3]
 data=src.read_text()
 data,count=re.subn(r'(?m)^(\s*image: )[^\n]+$',lambda m:m.group(1)+ref,data)
 if count != 1: raise SystemExit("Expected exactly one container image line")
