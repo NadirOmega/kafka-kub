@@ -1,45 +1,58 @@
-# Native Kafka from outside OpenShift via TLS passthrough
+# Kafka natif via OpenShift Route TLS passthrough (POC)
 
-This folder contains only **staged** manifests for a Service and a TLS passthrough Route. **Do not apply them yet**: the Kafka broker has no listener on port 9094 and no client authentication configured. The existing POC is intentionally unchanged.
+Le **même broker** `kafka-poc-0` sert les clients internes en PLAINTEXT sur 9092 et les clients externes en Kafka natif TLS sur 443 (port du Pod : 9094). Kafka Connect, REST Proxy, Schema Registry et Kafbat restent sur 9092, sans changement.
 
-## Important: generated Route hostname
+**Hostname réellement attribué par la Route :**
 
-The hostname assigned by OpenShift must be included in all of these locations:
+`kafka-poc-external-midlleware.apps.dev-app-hub.0k6e.p1.openshiftapps.com`
 
-- Kafka `advertised.listeners` for `EXTERNAL`: `EXTERNAL://<actual-route-hostname>:443`.
-- Kafka's server certificate **subjectAltName** (DNS) must include that exact hostname.
-- The external client `bootstrap.servers=<actual-route-hostname>:443`. It uses `security.protocol=SSL`, **not HTTPS**.
-- When scaling to multiple brokers, each broker requires its own externally reachable SNI hostname and corresponding Route/Service.
+Il figure **explicitement** dans `03-statefulset-tls.yaml`, sous `KAFKA_ADVERTISED_LISTENERS`, avec le port **443**. Ce hostname est aussi utilisé comme SAN du certificat créé par le script. S'il change, il faut régénérer les certificats et modifier le manifeste Git avant déploiement.
 
-The externally visible port is `443`; inside the Pod, `EXTERNAL` listens on `9094`. The internal `INTERNAL://...:9092` and controller `CONTROLLER://...:9093` listeners must remain intact. OpenShift Routes with TLS passthrough send encrypted TCP through without termination, relying on client SNI and cluster router settings.
+## Prérequis
 
-## Stage one: obtain the real hostname (no exposure yet)
+- Route `kafka-poc-external` et Service `kafka-poc-external` créés ; le listener du broker n'est pas encore activé.
+- `openssl`, `keytool`, `oc` disponibles dans Dev Spaces.
+- Accès `oc create secret` dans `midlleware`.
+- Acceptation de l'exposition du Kafka POC via mTLS ; ce n'est pas une configuration de production (pas d'ACL par identité).
+- Un arrêt bref du broker mono-nœud est attendu pendant le rollout. **Ne supprimer ni le PVC ni le Secret CLUSTER_ID.**
 
-The Service and Route can be **staged now only because the Kafka Pod does not listen on port 9094**. They expose no working Kafka socket in this state. Do not enable the 9094 listener until the certificate and client authentication are complete.
+## Déploiement ordonné
+
+Depuis la racine du dépôt Git :
 
 ```bash
 git pull --ff-only
-oc apply -f kafka-external/01-service.yaml -f kafka-external/02-route.yaml -n midlleware
-oc get route kafka-poc-external -n midlleware -o jsonpath='{.spec.host}{"\\n"}'
+
+# Crée une CA de POC, un certificat broker (SAN = hostname de la Route),
+# un certificat client et le Secret serveur Kubernetes.
+bash kafka-external/create-tls-secret.sh
+
+# Met à jour le MÊME StatefulSet Kafka avec trois listeners.
+oc apply -n midlleware -f kafka-external/03-statefulset-tls.yaml
+oc rollout status -n midlleware statefulset/kafka-poc --timeout=180s
 ```
 
-Take the real hostname and place it in the final broker `advertised.listeners` and certificate SAN, and then commit the broker's complete manifest. For this phase the backend port is still closed.
+Le script écrit les certificats clients et la CA dans `$HOME/kafka-external-tls` (permissions privées) ; **ne jamais pousser `client.key`, `ca.key` ou le mot de passe du magasin dans Git**. La CA générée localement est nécessaire aux clients externes et les certificats durent 30 jours. Le script refuse de remplacer un Secret ou des fichiers préexistants afin d'éviter des rotations accidentelles.
 
-**The host cannot be guessed or templated as `localhost` or as an internal `.svc` DNS.**
+## Test du handshake externe depuis un poste autorisé
 
-## Status
+```bash
+HOST=kafka-poc-external-midlleware.apps.dev-app-hub.0k6e.p1.openshiftapps.com
+openssl s_client -connect "$HOST:443" -servername "$HOST" \
+  -CAfile "$HOME/kafka-external-tls/ca.crt" \
+  -cert "$HOME/kafka-external-tls/client.crt" \
+  -key "$HOME/kafka-external-tls/client.key" \
+  -verify_return_error </dev/null 2>&1 | grep -E 'Verify return code|Verification:'
+```
 
-- `01-service.yaml`, `02-route.yaml` prepared and committed.
-- `poc/03-statefulset.yaml` intentionally untouched: no TLS cert, client mTLS credentials, hostname or authorization has yet been validated.
-- Do not deploy the Route to an unauthenticated Kafka listener.
-- mTLS client-authentication or equivalent approved SASL over TLS, proper SAN and CA trust, and ACL/security checks required before externally exposing.
+Ce test confirme TLS/mTLS, **pas** la production Kafka. Pour valider le protocole Kafka, utiliser `kcat` ou `kafka-console-producer` avec le certificat client et les paramètres SSL appropriés.
 
-## Test checklist after implementation
+## Important
 
-1. Verify route `Admitted=True`, and hostname is externally resolvable.
-2. `openssl s_client -connect host:443 -servername host` should return the certificate (SNI mandatory).
-3. An unauthorized client should **fail** authentication.
-4. A trusted client should retrieve metadata showing `host:443` via `kcat -L` / `kafka-broker-api-versions` and produce/consume successfully.
-5. Brokers' internal clients should continue working over port 9092.
+- `Route TLS passthrough` = **Kafka TCP chiffré**, sans HTTP.
+- Le port client visible de l'extérieur est **443** ; ne pas annoncer 9094 aux clients.
+- Le certificat doit être validé par les clients via notre CA de POC. Il n'utilise pas le certificat wildcard du routeur.
+- Pas de second cluster, pas de changement de PVC / `cluster.id` / `node.id`.
+- Le StatefulSet standard `poc/03-statefulset.yaml` reste la variante **interne uniquement**. Ne pas la réappliquer après activation de TLS sans intention de retour arrière : Kubernetes enlèverait le listener externe.
 
-Sources: https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/ingress_and_load_balancing/routes ; https://docs.confluent.io/platform/8.4/security/authentication/mutual-tls/overview.html
+Sources : https://docs.confluent.io/platform/current/kafka/listeners.html ; https://docs.confluent.io/platform/8.4/security/authentication/mutual-tls/overview.html ; https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/ingress_and_load_balancing/routes
