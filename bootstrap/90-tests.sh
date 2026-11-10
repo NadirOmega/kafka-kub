@@ -28,7 +28,7 @@ oc exec -n "$NS" kafka-poc-0 -- kafka-console-consumer \
 pids=()
 cleanup() { for pid in "${pids[@]}"; do kill "$pid" 2>/dev/null || true; done; }
 trap cleanup EXIT
-for spec in 'schema-registry 18081 8081' 'kafka-connect 18083 8083' 'kafka-rest 18082 8082'; do
+for spec in 'schema-registry 18081 8081' 'kafka-connect 18083 8083' 'kafka-rest 18082 8082' 'kafka-ui 18080 8080'; do
   read -r svc port target <<< "$spec"
   oc port-forward -n "$NS" "svc/$svc" "$port:$target" >/dev/null 2>&1 &
   pids+=("$!")
@@ -44,6 +44,8 @@ wait_http() {
 wait_http http://127.0.0.1:18081/subjects
 wait_http http://127.0.0.1:18083/connectors
 wait_http http://127.0.0.1:18082/v3/clusters
+wait_http http://127.0.0.1:18080/actuator/health
+info 'KAFBAT_UI_HEALTH_OK (login must be verified separately before public Route)'
 
 # Schema registration (REST API) with one new test subject.
 info "Schema Registry API"
