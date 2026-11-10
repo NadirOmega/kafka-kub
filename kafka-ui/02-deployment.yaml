@@ -1,0 +1,60 @@
+# POC ONLY: the official Kafbat UI image is not verified as Red Hat UBI.
+# Do NOT create a public Route until authentication/authorization is configured.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-ui
+  namespace: midlleware
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-ui
+  template:
+    metadata:
+      labels:
+        app: kafka-ui
+    spec:
+      enableServiceLinks: false
+      containers:
+        - name: kafka-ui
+          image: image-registry.openshift-image-registry.svc:5000/midlleware/kafbat-ui:a0aaba3
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: SERVER_PORT
+              value: "8080"
+            - name: KAFKA_CLUSTERS_0_NAME
+              value: kafka-poc
+            - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
+              value: kafka-poc-bootstrap:9092
+            - name: KAFKA_CLUSTERS_0_SCHEMAREGISTRY
+              value: http://schema-registry:8081
+            - name: KAFKA_CLUSTERS_0_KAFKACONNECT_0_NAME
+              value: connect-poc
+            - name: KAFKA_CLUSTERS_0_KAFKACONNECT_0_ADDRESS
+              value: http://kafka-connect:8083
+            - name: DYNAMIC_CONFIG_ENABLED
+              value: "false"
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 30
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 5
+          resources:
+            requests:
+              cpu: 200m
+              memory: 512Mi
+            limits:
+              cpu: "1"
+              memory: 1536Mi
