@@ -1,5 +1,5 @@
 # POC ONLY: the official Kafbat UI image is not verified as Red Hat UBI.
-# Do NOT create a public Route until authentication/authorization is configured.
+# Create the kafbat-ui-auth Secret before applying this Deployment or its Pod will not start.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -36,6 +36,19 @@ spec:
               value: connect-poc
             - name: KAFKA_CLUSTERS_0_KAFKACONNECT_0_ADDRESS
               value: http://kafka-connect:8083
+            # Login form for exposed UI; credentials are referenced from a Secret.
+            - name: AUTH_TYPE
+              value: LOGIN_FORM
+            - name: SPRING_SECURITY_USER_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: kafbat-ui-auth
+                  key: username
+            - name: SPRING_SECURITY_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kafbat-ui-auth
+                  key: password
             - name: DYNAMIC_CONFIG_ENABLED
               value: "false"
           startupProbe:
