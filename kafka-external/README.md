@@ -1,58 +1,100 @@
-# Kafka natif via OpenShift Route TLS passthrough (POC)
+# Kafka externe natif : Route OpenShift TLS passthrough (POC)
 
-Le **même broker** `kafka-poc-0` sert les clients internes en PLAINTEXT sur 9092 et les clients externes en Kafka natif TLS sur 443 (port du Pod : 9094). Kafka Connect, REST Proxy, Schema Registry et Kafbat restent sur 9092, sans changement.
+**Aucun hostname de cluster, certificat, clé privée ni mot de passe n'est enregistré dans Git.**
 
-**Hostname réellement attribué par la Route :**
+Le listener interne Kafka `9092` (Kafka Connect, Schema Registry, REST Proxy, Kafbat) et le controller `9093` restent identiques. Le même Pod Kafka écoute également sur `EXTERNAL:9094` en **SSL + authentification mutuelle TLS obligatoire (mTLS)**. La Route OpenShift utilise le port extérieur `443`, le protocole Kafka natif (ni HTTP ni REST), et le **SNI** pour sélectionner le backend.
 
-`kafka-poc-external-midlleware.apps.dev-app-hub.0k6e.p1.openshiftapps.com`
+Ce dispositif est **un POC à certificat CA local de 30 jours, non homologué production**. Pour la production : CA entreprise, gestion du cycle de vie, ACL Kafka, rotation certs, NetworkPolicies et autorisation de la Route. Le certificat de test doit être explicitement approuvé par le client externe.
 
-Il figure **explicitement** dans `03-statefulset-tls.yaml`, sous `KAFKA_ADVERTISED_LISTENERS`, avec le port **443**. Ce hostname est aussi utilisé comme SAN du certificat créé par le script. S'il change, il faut régénérer les certificats et modifier le manifeste Git avant déploiement.
+## Fichiers dans le dépôt
 
-## Prérequis
+- `01-service.yaml` : Service dédié `kafka-poc-external:9094`
+- `02-route.yaml` : Route `passthrough` sans `spec.host` (hostname généré par OpenShift)
+- `statefulset.template.yaml` : **StatefulSet complet**, avec `EXTERNAL_HOST_PLACEHOLDER` (NE PAS appliquer directement)
+- `prepare.sh` : récupère le vrai hostname depuis la Route, génère les certificats mTLS et le StatefulSet complet **localement**
+- `.gitignore` : ignore `generated/` (contient notamment les clés privées et l'URL réelle)
 
-- Route `kafka-poc-external` et Service `kafka-poc-external` créés ; le listener du broker n'est pas encore activé.
-- `openssl`, `keytool`, `oc` disponibles dans Dev Spaces.
-- Accès `oc create secret` dans `midlleware`.
-- Acceptation de l'exposition du Kafka POC via mTLS ; ce n'est pas une configuration de production (pas d'ACL par identité).
-- Un arrêt bref du broker mono-nœud est attendu pendant le rollout. **Ne supprimer ni le PVC ni le Secret CLUSTER_ID.**
+Le fichier `poc/03-statefulset.yaml` reste **inchangé**, comme référence de retour à la configuration interne initiale.
 
-## Déploiement ordonné
+## 1. Préparation locale (Dev Spaces)
 
-Depuis la racine du dépôt Git :
+Le Service et la Route que tu as déjà créés peuvent rester en place : le Pod actuel **n'écoute pas encore sur 9094**.
+
+Depuis la racine de `kafka-kub` :
 
 ```bash
 git pull --ff-only
-
-# Crée une CA de POC, un certificat broker (SAN = hostname de la Route),
-# un certificat client et le Secret serveur Kubernetes.
-bash kafka-external/create-tls-secret.sh
-
-# Met à jour le MÊME StatefulSet Kafka avec trois listeners.
-oc apply -n midlleware -f kafka-external/03-statefulset-tls.yaml
-oc rollout status -n midlleware statefulset/kafka-poc --timeout=180s
+bash kafka-external/prepare.sh
 ```
 
-Le script écrit les certificats clients et la CA dans `$HOME/kafka-external-tls` (permissions privées) ; **ne jamais pousser `client.key`, `ca.key` ou le mot de passe du magasin dans Git**. La CA générée localement est nécessaire aux clients externes et les certificats durent 30 jours. Le script refuse de remplacer un Secret ou des fichiers préexistants afin d'éviter des rotations accidentelles.
+Le script nécessite `oc`, `openssl` et `sed`. Il n'exécute **aucun `oc apply`**, pour ne pas redémarrer Kafka sans contrôle.
 
-## Test du handshake externe depuis un poste autorisé
+Il crée sous `kafka-external/generated/` :
+- `tls-secret.yaml` : Secret Kubernetes avec `server.p12`, CA de confiance et mot de passe PKCS12
+- `statefulset.yaml` : remplacement de `EXTERNAL_HOST_PLACEHOLDER` avec le hostname réel fourni par `oc get route`
+- `ca.crt`, `client.p12`, `client.properties` : matériel d'authentification côté client pour les tests
+- les clés privées et autres fichiers de création de certificats ; **ne jamais partager ni pousser ce dossier sur Git**
+
+Ce sont des secrets de test. Leur utilisation doit rester dans un environnement autorisé.
+
+## 2. Déployer (après vérification des fichiers locaux)
 
 ```bash
-HOST=kafka-poc-external-midlleware.apps.dev-app-hub.0k6e.p1.openshiftapps.com
-openssl s_client -connect "$HOST:443" -servername "$HOST" \
-  -CAfile "$HOME/kafka-external-tls/ca.crt" \
-  -cert "$HOME/kafka-external-tls/client.crt" \
-  -key "$HOME/kafka-external-tls/client.key" \
-  -verify_return_error </dev/null 2>&1 | grep -E 'Verify return code|Verification:'
+oc apply -n midlleware -f kafka-external/generated/tls-secret.yaml
+oc apply -n midlleware -f kafka-external/generated/statefulset.yaml
+oc rollout status statefulset/kafka-poc -n midlleware --timeout=180s
 ```
 
-Ce test confirme TLS/mTLS, **pas** la production Kafka. Pour valider le protocole Kafka, utiliser `kcat` ou `kafka-console-producer` avec le certificat client et les paramètres SSL appropriés.
+Ne jamais supprimer le PVC existant ni régénérer son Cluster ID.
 
-## Important
+## 3. Vérifier Kafka interne après redémarrage
 
-- `Route TLS passthrough` = **Kafka TCP chiffré**, sans HTTP.
-- Le port client visible de l'extérieur est **443** ; ne pas annoncer 9094 aux clients.
-- Le certificat doit être validé par les clients via notre CA de POC. Il n'utilise pas le certificat wildcard du routeur.
-- Pas de second cluster, pas de changement de PVC / `cluster.id` / `node.id`.
-- Le StatefulSet standard `poc/03-statefulset.yaml` reste la variante **interne uniquement**. Ne pas la réappliquer après activation de TLS sans intention de retour arrière : Kubernetes enlèverait le listener externe.
+```bash
+oc exec -n midlleware kafka-poc-0 -- kafka-topics \
+  --bootstrap-server kafka-poc-bootstrap:9092 --list
+```
 
-Sources : https://docs.confluent.io/platform/current/kafka/listeners.html ; https://docs.confluent.io/platform/8.4/security/authentication/mutual-tls/overview.html ; https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/ingress_and_load_balancing/routes
+## 4. Vérifier le certificat externe et le protocole Kafka
+
+Sur une machine **autorisée à joindre la Route** et disposant des certificats clients transférés de manière sécurisée :
+
+```bash
+HOST="$(oc get route kafka-poc-external -n midlleware -o jsonpath='{.spec.host}')"
+openssl s_client -connect "$HOST:443" -servername "$HOST" \
+  -CAfile kafka-external/generated/ca.crt -verify_return_error </dev/null
+```
+
+**Note :** ce premier contrôle TLS sans certificat client peut se terminer avec une alerte client-certificate-required (c'est attendu avec mTLS). Ce qui compte aussi est la chaîne serveur et le SAN du hostname.
+
+Le client Kafka natif doit être configuré avec :
+```properties
+bootstrap.servers=HOST_RECU_DEPUIS_OPENSHIFT:443
+security.protocol=SSL
+ssl.truststore.type=PEM
+ssl.truststore.location=/chemin/ca.crt
+ssl.keystore.type=PKCS12
+ssl.keystore.location=/chemin/client.p12
+ssl.keystore.password=MOT_DE_PASSE_CLIENT_LOCAL
+```
+
+Les valeurs complètes, **locales et non versionnées**, sont dans `kafka-external/generated/client.properties`.
+
+Un client Kafka `kcat` ou `kafka-broker-api-versions` disposant de TLS doit pouvoir récupérer les métadonnées ; vérifier qu'elles annoncent **l'hôte extérieur et le port 443**. Le routage TLS SNI doit être conservé : utiliser le hostname, pas une IP seule.
+
+**Attention :** les logiciels clients n'utilisent pas tous le même format de magasin de clés ; `client.properties` est prévu pour les outils Java Kafka.
+
+## Nettoyage / retour arrière
+
+Pour retirer **immédiatement** l'accès extérieur :
+
+```bash
+oc delete route kafka-poc-external -n midlleware
+```
+
+Le broker reste opérationnel en interne. Le changement de StatefulSet initial peut être annulé séparément en réappliquant `poc/03-statefulset.yaml`, avec un nouveau redémarrage contrôlé. Ne pas supprimer le PVC.
+
+## Références
+
+- https://docs.confluent.io/platform/current/installation/docker/config-reference.html
+- https://docs.confluent.io/platform/current/kafka/listeners.html
+- https://kafka.apache.org/43/security/encryption-and-authentication-using-ssl/
