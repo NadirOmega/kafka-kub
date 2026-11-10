@@ -17,6 +17,9 @@ spec:
       labels:
         app: schema-registry
     spec:
+      # Avoid Kubernetes injecting SCHEMA_REGISTRY_PORT from the Service name.
+      # Confluent's configure script treats that deprecated variable as fatal.
+      enableServiceLinks: false
       containers:
         - name: schema-registry
           image: image-registry.openshift-image-registry.svc:5000/midlleware/cp-schema-registry:8.4.0-1-ubi9
