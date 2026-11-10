@@ -35,8 +35,8 @@ fi
 
 HOST="$(oc get route kafka-poc-external -n "$NS" -o jsonpath='{.spec.host}')"
 [[ -n "$HOST" && "$HOST" =~ ^[a-zA-Z0-9.-]+$ ]] || { echo "Invalid Route host" >&2; exit 1; }
-IMAGE="$(sed -n 's/^[[:space:]]*image: \(.*cp-kafka@sha256:[a-f0-9]*\)$/\1/p' "$ROOT/statefulset.template.yaml" | head -n 1)"
-[[ -n "$IMAGE" ]] || { echo "Cannot identify cp-kafka image in template" >&2; exit 1; }
+IMAGE="$(oc get pod kafka-poc-0 -n "$NS" -o jsonpath='{.spec.containers[0].image}')"
+[[ "$IMAGE" == *cp-kafka@sha256:* ]] || { echo "Expected deployed cp-kafka image by digest" >&2; exit 1; }
 
 # Convert local certificate paths to paths inside the separate test Pod.
 sed "s|$OUT/|/etc/kafka/client/|g" "$OUT/client.properties" > "$TMP/client.properties"
