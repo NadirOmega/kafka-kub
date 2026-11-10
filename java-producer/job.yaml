@@ -1,0 +1,34 @@
+# Do not apply before building and pushing kafka-java-producer:1.0.0 into the namespace.
+# The tag is a deployment placeholder until its actual registry digest is inspected.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kafka-java-producer-test
+  namespace: midlleware
+spec:
+  backoffLimit: 1
+  ttlSecondsAfterFinished: 3600
+  template:
+    metadata:
+      labels:
+        app: kafka-java-producer-test
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: producer
+          image: image-registry.openshift-image-registry.svc:5000/midlleware/kafka-java-producer:1.0.0
+          imagePullPolicy: Always
+          env:
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: kafka-poc-bootstrap:9092
+            - name: KAFKA_TOPIC
+              value: test-kafka
+            - name: MESSAGE_COUNT
+              value: "10"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
