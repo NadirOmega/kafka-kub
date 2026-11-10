@@ -53,3 +53,16 @@ oc logs kafka-poc-0 -n midlleware --previous --tail=20
 - [Confluent — configuration des images Docker Kafka](https://docs.confluent.io/platform/8.4/installation/docker/config-reference.html)
 - [Confluent — configuration et formatage KRaft](https://docs.confluent.io/platform/8.4/kafka-metadata/config-kraft.html)
 - [Confluent — script d'initialisation de l'image Kafka](https://github.com/confluentinc/kafka-images/blob/master/kafka/include/etc/confluent/docker/ensure)
+
+## Correction du crash `lost+found` (10/11/2026)
+
+Le PVC est formaté avec un système de fichiers qui contient `lost+found` à sa racine. Kafka refuse de le traiter comme un dossier de topic. Le StatefulSet monte **toujours le même PVC** en `/var/lib/kafka/data`, mais utilise `KAFKA_LOG_DIRS=/var/lib/kafka/data/kafka-logs`. Le formatteur Kafka crée ce sous-dossier et l'initialise avec le Cluster ID du Secret.
+
+Ce changement de `log.dirs` est adapté **au POC récemment recréé**, sans données applicatives à conserver. Pour un cluster déjà chargé de données, changer `log.dirs` sans migration préalable peut rendre des partitions ou métadonnées existantes inaccessibles : ne pas l'appliquer aveuglément en production.
+
+Après `git pull --ff-only` puis `oc apply -f poc/ -n midlleware`, le StatefulSet redémarre le Pod pour appliquer le nouvel environnement. Vérification ciblée :
+
+```bash
+oc get pod kafka-poc-0 -n midlleware
+oc logs kafka-poc-0 -n midlleware --tail=15
+```
