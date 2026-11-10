@@ -8,27 +8,37 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OUT="$ROOT/generated"
 HOST="$(oc get route kafka-poc-external -n "$NS" -o jsonpath='{.spec.host}')"
 [[ -n "$HOST" && "$HOST" =~ ^[a-zA-Z0-9.-]+$ ]] || { echo "Invalid/empty Route hostname"; exit 1; }
-[[ ! -e "$OUT/ca.key" ]] || { echo "Existing local CA in $OUT: refuse to overwrite"; exit 1; }
+# Archive a previous INCOMPLETE generation, without replacing active materials.
+if [[ -e "$OUT/ca.key" ]]; then
+  if [[ -e "$OUT/statefulset.yaml" || -e "$OUT/tls-secret.yaml" ]]; then
+    echo "Existing complete TLS files found; refusing to overwrite. Reuse them or back them up manually."
+    exit 1
+  fi
+  BACKUP="$ROOT/generated-incomplete-$(date +%Y%m%d-%H%M%S)"
+  mv "$OUT" "$BACKUP"
+  echo "Archived incomplete TLS generation (not published to Git)."
+fi
 for tool in oc openssl sed; do command -v "$tool" >/dev/null || { echo "Missing tool: $tool"; exit 1; }; done
 mkdir -p "$OUT"
 chmod 700 "$OUT"
+trap 'echo "Certificate generation failed at line $LINENO (see OpenSSL error above); nothing applied." >&2' ERR
 
-# 2. Generate a short-lived local POC CA, broker certificate (SAN=Route hostname)
-#    and a separate client certificate for mutual TLS.
+# 2. Use a short certificate CN (max 64 chars); the actual Route hostname belongs in SAN.
+#    Generate a 30-day CA and separate client certificate for mutual TLS.
 openssl req -x509 -newkey rsa:3072 -sha256 -nodes -days 30 \
-  -subj "/CN=Kafka POC local CA" -keyout "$OUT/ca.key" -out "$OUT/ca.crt" >/dev/null 2>&1
+  -subj "/CN=Kafka POC local CA" -keyout "$OUT/ca.key" -out "$OUT/ca.crt" >/dev/null
 openssl req -new -newkey rsa:3072 -sha256 -nodes \
-  -subj "/CN=$HOST" -keyout "$OUT/server.key" -out "$OUT/server.csr" >/dev/null 2>&1
+  -subj "/CN=kafka-poc-server" -keyout "$OUT/server.key" -out "$OUT/server.csr" >/dev/null
 printf 'subjectAltName=DNS:%s\nextendedKeyUsage=serverAuth\n' "$HOST" > "$OUT/server.ext"
 openssl x509 -req -sha256 -days 30 -in "$OUT/server.csr" \
   -CA "$OUT/ca.crt" -CAkey "$OUT/ca.key" -CAcreateserial \
-  -extfile "$OUT/server.ext" -out "$OUT/server.crt" >/dev/null 2>&1
+  -extfile "$OUT/server.ext" -out "$OUT/server.crt" >/dev/null
 openssl req -new -newkey rsa:3072 -sha256 -nodes \
-  -subj "/CN=kafka-poc-client" -keyout "$OUT/client.key" -out "$OUT/client.csr" >/dev/null 2>&1
+  -subj "/CN=kafka-poc-client" -keyout "$OUT/client.key" -out "$OUT/client.csr" >/dev/null
 printf 'extendedKeyUsage=clientAuth\n' > "$OUT/client.ext"
 openssl x509 -req -sha256 -days 30 -in "$OUT/client.csr" \
   -CA "$OUT/ca.crt" -CAkey "$OUT/ca.key" -CAcreateserial \
-  -extfile "$OUT/client.ext" -out "$OUT/client.crt" >/dev/null 2>&1
+  -extfile "$OUT/client.ext" -out "$OUT/client.crt" >/dev/null
 
 # 3. PKCS12 keystores and a manifest-only Kubernetes Secret.
 #    Secret is local and ignored by Git; nothing is applied automatically.
@@ -36,10 +46,10 @@ export KEYSTORE_PASSWORD="$(openssl rand -hex 20)"
 export CLIENT_PASSWORD="$(openssl rand -hex 20)"
 openssl pkcs12 -export -name kafka-poc-server \
   -inkey "$OUT/server.key" -in "$OUT/server.crt" -certfile "$OUT/ca.crt" \
-  -out "$OUT/server.p12" -passout env:KEYSTORE_PASSWORD >/dev/null 2>&1
+  -out "$OUT/server.p12" -passout env:KEYSTORE_PASSWORD >/dev/null
 openssl pkcs12 -export -name kafka-poc-client \
   -inkey "$OUT/client.key" -in "$OUT/client.crt" -certfile "$OUT/ca.crt" \
-  -out "$OUT/client.p12" -passout env:CLIENT_PASSWORD >/dev/null 2>&1
+  -out "$OUT/client.p12" -passout env:CLIENT_PASSWORD >/dev/null
 oc create secret generic kafka-poc-external-tls -n "$NS" \
   --from-file=server.p12="$OUT/server.p12" \
   --from-file=ca.crt="$OUT/ca.crt" \
