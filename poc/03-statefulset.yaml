@@ -46,8 +46,10 @@ spec:
               value: "CONTROLLER"
             - name: KAFKA_CONTROLLER_QUORUM_VOTERS
               value: "1@kafka-poc-0.kafka-poc-headless.midlleware.svc:9093"
+            # Separate Kafka logs from the filesystem root (ext4 lost+found).
+            # Kafka storage formatter creates this directory on the existing PVC.
             - name: KAFKA_LOG_DIRS
-              value: "/var/lib/kafka/data"
+              value: "/var/lib/kafka/data/kafka-logs"
             - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
               value: "1"
             - name: KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR
