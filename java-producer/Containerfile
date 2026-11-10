@@ -1,0 +1,8 @@
+# Build the shaded jar first: mvn -B -ntp -DskipTests package
+# Base image must be mirrored/approved by your enterprise before use.
+FROM registry.access.redhat.com/ubi9/openjdk-17-runtime:latest
+WORKDIR /deployments
+COPY --chown=185:0 target/kafka-java-producer-1.0.0.jar /deployments/app.jar
+# Compatible with OpenShift arbitrary UID where possible; validate SCC in the cluster.
+USER 185
+ENTRYPOINT ["java", "-jar", "/deployments/app.jar"]
