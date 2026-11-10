@@ -1,0 +1,16 @@
+# POC Kafka native TCP over TLS; points to the future EXTERNAL listener.
+# Do not use until a TLS listener and client certificate authentication are configured.
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-poc-external
+  namespace: midlleware
+spec:
+  type: ClusterIP
+  selector:
+    app: kafka-poc
+  ports:
+    - name: kafka-tls
+      port: 9094
+      targetPort: 9094
+      protocol: TCP
