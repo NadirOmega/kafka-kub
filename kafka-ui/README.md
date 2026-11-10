@@ -1,48 +1,67 @@
-# Kafbat UI — POC OpenShift
+# Kafbat UI — POC OpenShift, accès HTTPS protégé
 
-Image **officielle Alpine/non UBI** `kafbat/kafka-ui:a0aaba3` (exception temporaire à la politique d'images : nécessite accord de l'équipe sécurité). Ce dossier ne crée **aucune Route publique**, car l'authentification de l'UI n'est pas encore configurée.
+Image officielle Kafbat UI `a0aaba3` (Alpine / non UBI ; exception POC à valider avec la SSI). Namespace `midlleware`.
 
-## Importer l'image (Dev Spaces, si autorisé)
+## Composants
+
+- `01-service.yaml` : Service interne `kafka-ui:8080`.
+- `02-deployment.yaml` : UI Kafka, Schema Registry et Kafka Connect ; login `AUTH_TYPE=LOGIN_FORM` depuis le Secret `kafbat-ui-auth`.
+- `public/01-route.yaml` : Route HTTPS OpenShift facultative, séparée pour **éviter une exposition accidentelle** lors de `oc apply -f kafka-ui/`.
+
+## 1. Créer le Secret avant le déploiement
+
+Depuis Dev Spaces, dans le bon projet OpenShift :
 
 ```bash
-REG="image-registry.openshift-image-registry.svc:5000"
-NS="midlleware"
-TAG="a0aaba3"
-export XDG_RUNTIME_DIR="$HOME/.local/run"
-export XDG_CONFIG_HOME="$HOME/.config"
-export REGISTRY_AUTH_FILE="$HOME/.config/containers/auth.json"
-mkdir -p "$XDG_RUNTIME_DIR" "$(dirname "$REGISTRY_AUTH_FILE")"
-chmod 700 "$XDG_RUNTIME_DIR"
-skopeo login --authfile "$REGISTRY_AUTH_FILE" docker.io
-oc whoami -t | skopeo login --authfile "$REGISTRY_AUTH_FILE" -u "$(oc whoami)" --password-stdin "$REG"
-skopeo --insecure-policy copy --src-authfile "$REGISTRY_AUTH_FILE" --dest-authfile "$REGISTRY_AUTH_FILE" \
-  "docker://docker.io/kafbat/kafka-ui:$TAG" "docker://$REG/$NS/kafbat-ui:$TAG"
-oc get istag "kafbat-ui:$TAG" -n "$NS"
+NS=midlleware
+umask 077
+TMP_DIR="$(mktemp -d)"
+trap 'rm -rf "$TMP_DIR"' EXIT
+printf '%s' 'admin' > "$TMP_DIR/username"
+read -rsp 'Mot de passe Kafbat : ' UI_PASSWORD
+printf '\n'
+printf '%s' "$UI_PASSWORD" > "$TMP_DIR/password"
+unset UI_PASSWORD
+oc create secret generic kafbat-ui-auth -n "$NS" \
+  --from-file=username="$TMP_DIR/username" \
+  --from-file=password="$TMP_DIR/password" \
+  --dry-run=client -o yaml | oc apply -n "$NS" -f -
+rm -rf "$TMP_DIR"
+trap - EXIT
 ```
 
-Le tag est explicitement fixé. Après import, relever le digest réel dans le registre de destination et le figer dans `02-deployment.yaml` pour un déploiement pérenne.
+**Ne pas versionner le mot de passe dans Git et ne pas partager la sortie des Secrets.** Cette authentification locale n'est pas un mécanisme SSO/RBAC complet. En cas d'exposition réellement Internet, faire approuver l'accès par la SSI et privilégier OIDC/SSO + restrictions réseau.
 
-## Déployer et tester **sans exposition externe**
-
-Depuis la racine du dépôt :
+## 2. Mettre à jour l'UI existante et tester le login
 
 ```bash
 git pull --ff-only
 oc apply -n midlleware -f kafka-ui/
-oc rollout status deployment/kafka-ui -n midlleware --timeout=180s
-oc port-forward -n midlleware svc/kafka-ui 18080:8080
+oc rollout status -n midlleware deployment/kafka-ui --timeout=180s
 ```
 
-Dans le navigateur du poste qui exécute réellement le port-forward : `http://localhost:18080`. Si Dev Spaces est distant, `localhost` sur le PC ne pointe **pas** vers Dev Spaces : employer uniquement le mécanisme de prévisualisation de ports homologué par la plateforme.
+Avant la Route, accéder à l'UI par la prévisualisation de ports Dev Spaces déjà validée. Vérifier que le formulaire d'authentification est affiché, qu'une session anonyme ne donne pas accès à l'administration et qu'une connexion avec le compte fonctionne. Si ce contrôle échoue, **ne pas appliquer la Route**.
 
-## Services intégrés
+## 3. Activer explicitement la Route (après test du login)
 
-- Kafka : `kafka-poc-bootstrap:9092` (broker découvert via `advertised.listeners`)
-- Schema Registry : `http://schema-registry:8081`
-- Kafka Connect : `http://kafka-connect:8083`
+```bash
+oc apply -n midlleware -f kafka-ui/public/01-route.yaml
+oc get route kafka-ui -n midlleware -o jsonpath='https://{.spec.host}{"\n"}'
+```
 
-## Exposition externe (étape séparée, NON activée)
+OpenShift attribue normalement un hostname si `spec.host` est absent. Une Route admise ne prouve pas qu'elle est accessible depuis Internet : l'Ingress Controller peut être interne, et le réseau entreprise peut bloquer l'accès. Contrôler depuis un navigateur hors VPN/réseau entreprise si autorisé et inspecter `oc get route kafka-ui -n midlleware` en cas de problème.
 
-Le droit de créer des Routes a été vérifié pour `midlleware`, mais la portée publique du routeur n'a pas été vérifiée. Avant toute Route HTTPS, configurer et tester l'authentification (SSO/OIDC ou proxy d'authentification), les droits et un contrôle d'accès réseau. Une Route sans `spec.host` peut obtenir un hostname attribué par OpenShift ; cela ne garantit pas l'accès Internet. Ne jamais publier l'interface anonyme qui peut administrer Kafka.
+La terminaison TLS est `edge` (navigateur → routeur en HTTPS ; routeur → Pod en HTTP interne). Le certificat par défaut du cluster doit être valide pour le domaine attribué.
 
-Documentation : https://ui.docs.kafbat.io/configuration/misc-configuration-properties
+## Désactivation de l'exposition
+
+```bash
+oc delete route kafka-ui -n midlleware
+```
+
+Ne pas désactiver l'authentification du Deployment lorsque la Route existe.
+
+## Références
+
+- https://ui.docs.kafbat.io/configuration/authentication/for-the-ui/basic-authentication
+- https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/ingress_and_load_balancing/routes
