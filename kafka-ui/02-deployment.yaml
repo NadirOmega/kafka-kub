@@ -1,5 +1,5 @@
 # POC ONLY: the official Kafbat UI image is not verified as Red Hat UBI.
-# POC without authentication; keep behind an approved private preview, not a public Route.
+# POC: enable Kafbat login form before use through the HTTPS Route.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -37,7 +37,17 @@ spec:
             - name: KAFKA_CLUSTERS_0_KAFKACONNECT_0_ADDRESS
               value: http://kafka-connect:8083
             - name: AUTH_TYPE
-              value: DISABLED
+              value: LOGIN_FORM
+            - name: SPRING_SECURITY_USER_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: kafbat-ui-auth
+                  key: username
+            - name: SPRING_SECURITY_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kafbat-ui-auth
+                  key: password
             - name: DYNAMIC_CONFIG_ENABLED
               value: "false"
           startupProbe:
