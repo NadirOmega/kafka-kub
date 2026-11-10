@@ -1,0 +1,55 @@
+# Kafka REST Proxy 8.4 POC: internal-only HTTP and single replica.
+# Reference by OpenShift tag until the imported image digest is recorded.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-rest
+  namespace: midlleware
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-rest
+  template:
+    metadata:
+      labels:
+        app: kafka-rest
+    spec:
+      # Avoid injected KAFKA_REST_PORT from the same-named Kubernetes Service.
+      enableServiceLinks: false
+      containers:
+        - name: kafka-rest
+          image: image-registry.openshift-image-registry.svc:5000/midlleware/cp-kafka-rest:8.4.0-1-ubi9
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8082
+          env:
+            - name: KAFKA_REST_HOST_NAME
+              value: kafka-rest
+            - name: KAFKA_REST_LISTENERS
+              value: http://0.0.0.0:8082
+            - name: KAFKA_REST_BOOTSTRAP_SERVERS
+              value: kafka-poc-bootstrap:9092
+            - name: KAFKA_REST_SCHEMA_REGISTRY_URL
+              value: http://schema-registry:8081
+          startupProbe:
+            httpGet:
+              path: /v3/clusters
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 30
+          readinessProbe:
+            httpGet:
+              path: /v3/clusters
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 5
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
