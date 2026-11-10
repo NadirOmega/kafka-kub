@@ -1,68 +1,47 @@
-# Kafka sur OpenShift — sans Operator
+# Kafka OpenShift — POC Confluent Kafka KRaft sans Operator
 
-Manifests Kubernetes du POC **Kafka KRaft** dans le namespace existant `midlleware`.
+**Documentation à jour :**
+- [HANDOFF.md](HANDOFF.md) — contexte technique, architecture validée, incidents et limitations
+- [bootstrap/README.md](bootstrap/README.md) — installation **de zéro**, scripts par composant et tests
+- [kafka-external/README.md](kafka-external/README.md) — listener Kafka TLS/mTLS sur Route passthrough :443
 
-## État réel
+## Plateforme fonctionnelle observée (10 novembre 2026)
 
-- Image `cp-kafka:8.4.0-1-ubi9` copiée dans le registre OpenShift. **Pull réussi par digest** (observé dans les événements du Pod).
-- `gp3` existe dans le cluster. Le bon fonctionnement du PVC et du broker reste à valider par un démarrage complet.
-- Le **PVC préexistant** contient déjà un `cluster.id`. Le Secret `poc/02-cluster-id-secret.yaml` contient la **valeur relevée dans l'erreur Kafka** du 10/11/2026 (champ `but read`), et non un nouvel UUID.
-- **Le broker n'est pas encore confirmé Ready**. Ne pas présenter ces manifests comme homologués production.
+Namespace **`midlleware`**. Kafka KRaft mono-broker avec volume `gp3` et listeners `INTERNAL:9092`, `CONTROLLER:9093`, `EXTERNAL:9094` (Route TLS passthrough sur :443). Schema Registry, Kafka Connect, REST Proxy et Kafbat UI sont opérationnels. Producer/consumer Kafka natif sur :443 testés **depuis un Pod**, non depuis un PC externe.
 
-## Fichiers
+Confluent `cp-*:8.4.0-1-ubi9`. Kafbat `a0aaba3` officielle **non UBI** — dérogation POC. UI via Route HTTPS avec `LOGIN_FORM` (Secret Kubernetes).
 
-- `poc/01-services.yaml` : bootstrap ClusterIP et service headless pour le DNS du Pod.
-- `poc/02-cluster-id-secret.yaml` : Cluster ID *fixe*, identique à celui du PVC déjà formaté.
-- `poc/03-statefulset.yaml` : un Pod Kafka (broker + controller), disque RWO gp3, image par digest immutable, DNS du namespace `midlleware`.
-
-## Déploiement / correction du CrashLoopBackOff actuel
-
-Dans Dev Spaces avec `oc` connecté au cluster :
+## Nouveau déploiement (namespace vide uniquement)
 
 ```bash
-git pull --ff-only
-oc apply -f poc/ -n midlleware
-oc delete pod kafka-poc-0 -n midlleware
-oc get pod kafka-poc-0 -n midlleware -w
+oc project midlleware
+bash bootstrap/00-preflight.sh
+bash bootstrap/install-all.sh
+bash bootstrap/90-tests.sh
 ```
 
-La suppression du **Pod uniquement** provoque sa recréation par le StatefulSet et recharge la valeur du Secret. **Ne supprimer ni PVC ni StatefulSet.** Si le Pod devient Ready, vérifier l'API Kafka :
+`install-all.sh` réalise images → Kafka → Schema Registry → Connect → REST Proxy → Kafbat. Il refuse le StatefulSet ou le PVC Kafka existant. Il **ne crée aucune Route publique**.
+
+Les extensions sont **optionnelles** :
 
 ```bash
-oc exec -n midlleware kafka-poc-0 -- \
-  kafka-broker-api-versions --bootstrap-server kafka-poc-bootstrap:9092 \
-  >/dev/null && echo "KAFKA API OK"
+bash bootstrap/65-kafbat-route.sh   # UI HTTPS avec login (si autorisé)
+bash bootstrap/70-external-tls.sh   # Kafka natif mTLS via Route 443
+TEST_EXTERNAL=1 bash bootstrap/90-tests.sh
 ```
 
-Si le Pod reste en échec, consulter uniquement la fin du log précédent :
+**Ne lance pas l'installation neuve sur le POC actuellement déployé** : le but est de reconstruire un environnement vide, pas de réinitialiser ses données. Pour tester l'instance actuelle, utilise uniquement :
 
 ```bash
-oc logs kafka-poc-0 -n midlleware --previous --tail=20
+bash bootstrap/90-tests.sh
 ```
 
-## Invariants / sécurité
+## Avertissements
 
-- Le `cluster.id` du Secret doit **toujours** correspondre à `cluster.id` dans `meta.properties` sur le PVC. `--ignore-formatted` ne permet **pas** de faire démarrer Kafka avec un autre ID.
-- Ne jamais régénérer le Cluster ID ni reformater/supprimer un PVC utilisé pour « corriger » une erreur d'identité.
-- Un nouveau cluster **avec un nouveau PVC vide** doit recevoir son propre ID Kafka, généré **une seule fois** par `kafka-storage random-uuid`, puis conservé.
-- Mode combiné et `PLAINTEXT` **uniquement pour ce POC interne isolé** ; pas de Route, Ingress, LoadBalancer ni NodePort.
-- Pour la production, prévoir controllers et brokers dédiés, TLS/authentification, réplication, supervision, sauvegarde et tests de reprise.
+- `poc/02-cluster-id-secret.yaml` est un ancien Secret propre au PVC historique. **Ne jamais appliquer tout `poc/` sur une nouvelle installation** : `bootstrap/20-kafka.sh` génère son propre ID stable.
+- `poc/03-statefulset.yaml` décrit le broker **interne seulement**. `kafka-external/statefulset.template.yaml` sert de modèle pour la version TLS ; le hostname réel est injecté localement, jamais dans Git.
+- Les répertoires `bootstrap/generated/` et `kafka-external/generated/` contiennent des configurations et secrets locaux, ignorés par Git.
+- Les certificats de test sont valables 30 jours. Leur rotation n'est pas automatisée.
+- POC mono-broker avec listener interne PLAINTEXT. **Non homologué production**.
 
-## Références techniques
-
-- [Confluent — configuration des images Docker Kafka](https://docs.confluent.io/platform/8.4/installation/docker/config-reference.html)
-- [Confluent — configuration et formatage KRaft](https://docs.confluent.io/platform/8.4/kafka-metadata/config-kraft.html)
-- [Confluent — script d'initialisation de l'image Kafka](https://github.com/confluentinc/kafka-images/blob/master/kafka/include/etc/confluent/docker/ensure)
-
-## Correction du crash `lost+found` (10/11/2026)
-
-Le PVC est formaté avec un système de fichiers qui contient `lost+found` à sa racine. Kafka refuse de le traiter comme un dossier de topic. Le StatefulSet monte **toujours le même PVC** en `/var/lib/kafka/data`, mais utilise `KAFKA_LOG_DIRS=/var/lib/kafka/data/kafka-logs`. Le formatteur Kafka crée ce sous-dossier et l'initialise avec le Cluster ID du Secret.
-
-Ce changement de `log.dirs` est adapté **au POC récemment recréé**, sans données applicatives à conserver. Pour un cluster déjà chargé de données, changer `log.dirs` sans migration préalable peut rendre des partitions ou métadonnées existantes inaccessibles : ne pas l'appliquer aveuglément en production.
-
-Après `git pull --ff-only` puis `oc apply -f poc/ -n midlleware`, le StatefulSet redémarre le Pod pour appliquer le nouvel environnement. Vérification ciblée :
-
-```bash
-oc get pod kafka-poc-0 -n midlleware
-oc logs kafka-poc-0 -n midlleware --tail=15
-```
+Voir [bootstrap/README.md](bootstrap/README.md) avant toute exécution.
