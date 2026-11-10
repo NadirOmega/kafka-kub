@@ -1,0 +1,16 @@
+# Exposes Kafka's native TLS listener over TCP/443 with SNI.
+# No HTTP/HTTPS protocol is used by the Kafka client.
+# Do not apply until the broker listener has TLS and client authentication enabled.
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: kafka-poc-external
+  namespace: midlleware
+spec:
+  to:
+    kind: Service
+    name: kafka-poc-external
+  port:
+    targetPort: kafka-tls
+  tls:
+    termination: passthrough
