@@ -15,7 +15,15 @@ The externally visible port is `443`; inside the Pod, `EXTERNAL` listens on `909
 
 ## Stage one: obtain the real hostname (no exposure yet)
 
-The Route must **not be created before** broker TLS and authentication are ready. To discover the domain without applying it, you can inspect an existing admitted Route in an authorized namespace (if available), or request the cluster ingress domain from your OpenShift administrator. Since there are no Routes in `midlleware`, another safe option is to create a Route for a harmless test Service, inspect its generated hostname, and then delete it. Alternatively, once the secure listener and cert are configured, apply `01-service.yaml` and `02-route.yaml`, retrieve the assigned hostname, and set the hostname in Kafka's deployment, then roll it out.
+The Service and Route can be **staged now only because the Kafka Pod does not listen on port 9094**. They expose no working Kafka socket in this state. Do not enable the 9094 listener until the certificate and client authentication are complete.
+
+```bash
+git pull --ff-only
+oc apply -f kafka-external/01-service.yaml -f kafka-external/02-route.yaml -n midlleware
+oc get route kafka-poc-external -n midlleware -o jsonpath='{.spec.host}{"\\n"}'
+```
+
+Take the real hostname and place it in the final broker `advertised.listeners` and certificate SAN, and then commit the broker's complete manifest. For this phase the backend port is still closed.
 
 **The host cannot be guessed or templated as `localhost` or as an internal `.svc` DNS.**
 
