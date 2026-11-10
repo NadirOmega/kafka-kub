@@ -1,0 +1,84 @@
+# POC : Kafka Connect distributed mode with one worker, no connector plugins added.
+# Internal Kafka topics auto-created with RF=1 for the existing one-broker POC.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-connect
+  namespace: midlleware
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: kafka-connect
+  template:
+    metadata:
+      labels:
+        app: kafka-connect
+    spec:
+      # Prevent Kubernetes service env vars such as KAFKA_CONNECT_PORT
+      # from interfering with Confluent image setup scripts.
+      enableServiceLinks: false
+      containers:
+        - name: kafka-connect
+          image: image-registry.openshift-image-registry.svc:5000/midlleware/cp-kafka-connect:8.4.0-1-ubi9
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8083
+          env:
+            - name: CONNECT_BOOTSTRAP_SERVERS
+              value: kafka-poc-bootstrap:9092
+            - name: CONNECT_GROUP_ID
+              value: kafka-connect-poc
+            - name: CONNECT_CONFIG_STORAGE_TOPIC
+              value: kafka-connect-poc-configs
+            - name: CONNECT_OFFSET_STORAGE_TOPIC
+              value: kafka-connect-poc-offsets
+            - name: CONNECT_STATUS_STORAGE_TOPIC
+              value: kafka-connect-poc-status
+            - name: CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR
+              value: "1"
+            - name: CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR
+              value: "1"
+            - name: CONNECT_STATUS_STORAGE_REPLICATION_FACTOR
+              value: "1"
+            - name: CONNECT_OFFSET_STORAGE_PARTITIONS
+              value: "3"
+            - name: CONNECT_STATUS_STORAGE_PARTITIONS
+              value: "3"
+            - name: CONNECT_KEY_CONVERTER
+              value: org.apache.kafka.connect.json.JsonConverter
+            - name: CONNECT_VALUE_CONVERTER
+              value: org.apache.kafka.connect.json.JsonConverter
+            - name: CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE
+              value: "false"
+            - name: CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE
+              value: "false"
+            - name: CONNECT_REST_PORT
+              value: "8083"
+            - name: CONNECT_REST_ADVERTISED_HOST_NAME
+              value: kafka-connect
+            - name: CONNECT_PLUGIN_PATH
+              value: /usr/share/java
+          startupProbe:
+            httpGet:
+              path: /connectors
+              port: http
+            periodSeconds: 10
+            failureThreshold: 30
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /connectors
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 5
+          resources:
+            requests:
+              cpu: 250m
+              memory: 1Gi
+            limits:
+              cpu: "2"
+              memory: 2Gi
