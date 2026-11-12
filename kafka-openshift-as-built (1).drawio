@@ -1,0 +1,337 @@
+<mxfile host="app.diagrams.net" agent="ChatGPT">
+  <diagram id="kafka-asbuilt" name="Kafka OpenShift — As Built">
+    <mxGraphModel dx="2397" dy="1331" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1840" pageHeight="1230" background="#F6F8FC" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="x1" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=#111D32;strokeColor=#111D32;strokeWidth=0;fontSize=15;fontFamily=Arial;fontColor=#1B2940;fontStyle=0;align=center;verticalAlign=middle;spacing=7;shadow=0;" value="" vertex="1">
+          <mxGeometry height="120" width="1840" as="geometry" />
+        </mxCell>
+        <mxCell id="x2" parent="1" style="shape=image;verticalLabelPosition=bottom;verticalAlign=top;imageAspect=0;aspect=fixed;image=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgdmlld0JveD0iMCAwIDY0IDY0Ij48Y2lyY2xlIGN4PSIzMiIgY3k9IjMyIiByPSIyMyIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRUU0MjM2IiBzdHJva2Utd2lkdGg9IjgiIHN0cm9rZS1kYXNoYXJyYXk9IjY3IDIwIDQ1IDIwIiB0cmFuc2Zvcm09InJvdGF0ZSgtMzAgMzIgMzIpIi8+PHBhdGggZD0iTTE4IDIwIEw0NiAyMCBNMTggNDQgTDQ2IDQ0IiBzdHJva2U9IiNFRTQyMzYiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+;" value="" vertex="1">
+          <mxGeometry height="56" width="56" x="52" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="x3" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=30;fontFamily=Arial;fontColor=#FFFFFF;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="KAFKA PLATFORM  /  OPENSHIFT" vertex="1">
+          <mxGeometry height="42" width="1090" x="132" y="22" as="geometry" />
+        </mxCell>
+        <mxCell id="x5" parent="1" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#2E3E59;strokeColor=#4B5B75;strokeWidth=1.2;fontSize=17;fontFamily=Arial;fontColor=#F6DDA0;fontStyle=1;align=center;verticalAlign=middle;spacing=7;shadow=0;" value="POC · Single broker · Non-HA" vertex="1">
+          <mxGeometry height="52" width="320" x="1460" y="35" as="geometry" />
+        </mxCell>
+        <mxCell id="x6" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=17;fontFamily=Arial;fontColor=#455C7A;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="01    EXTERNAL CONSUMERS" vertex="1">
+          <mxGeometry height="30" width="780" x="58" y="145" as="geometry" />
+        </mxCell>
+        <mxCell id="x7" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#DDE5F0;strokeWidth=1.2;fontSize=15;fontFamily=Arial;fontColor=#1B2940;fontStyle=0;align=center;verticalAlign=middle;spacing=7;shadow=1;" value="" vertex="1">
+          <mxGeometry height="96" width="790" x="64" y="192" as="geometry" />
+        </mxCell>
+        <mxCell id="x8" parent="1" style="shape=image;verticalLabelPosition=bottom;verticalAlign=top;imageAspect=0;aspect=fixed;image=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgdmlld0JveD0iMCAwIDY0IDY0Ij48cmVjdCB4PSI4IiB5PSIxMCIgd2lkdGg9IjQ4IiBoZWlnaHQ9IjM2IiByeD0iNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNEY3OEREIiBzdHJva2Utd2lkdGg9IjUiLz48cGF0aCBkPSJNMjQgNTVoMTYgTTMyIDQ2djkiIHN0cm9rZT0iIzRGNzhERCIgc3Ryb2tlLXdpZHRoPSI1IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=;" value="" vertex="1">
+          <mxGeometry height="46" width="46" x="88" y="216" as="geometry" />
+        </mxCell>
+        <mxCell id="x9" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=20;fontFamily=Arial;fontColor=#182B47;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="Kafbat user" vertex="1">
+          <mxGeometry height="37" width="415" x="156" y="203" as="geometry" />
+        </mxCell>
+        <mxCell id="x10" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=15;fontFamily=Arial;fontColor=#687D96;fontStyle=0;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="Browser · HTTPS administration" vertex="1">
+          <mxGeometry height="28" width="620" x="156" y="239" as="geometry" />
+        </mxCell>
+        <mxCell id="x11" parent="1" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#DDE5F0;strokeWidth=1.2;fontSize=15;fontFamily=Arial;fontColor=#1B2940;fontStyle=0;align=center;verticalAlign=middle;spacing=7;shadow=1;" value="" vertex="1">
+          <mxGeometry height="96" width="790" x="990" y="192" as="geometry" />
+        </mxCell>
+        <mxCell id="x12" parent="1" style="shape=image;verticalLabelPosition=bottom;verticalAlign=top;imageAspect=0;aspect=fixed;image=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgdmlld0JveD0iMCAwIDY0IDY0Ij48cmVjdCB4PSI4IiB5PSIxMCIgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQ0IiByeD0iNSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNEY3OEREIiBzdHJva2Utd2lkdGg9IjUiLz48cGF0aCBkPSJNMTcgMjRsOSA4LTkgOCBNMzEgNDJoMTUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzRGNzhERCIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=;" value="" vertex="1">
+          <mxGeometry height="46" width="46" x="1017" y="216" as="geometry" />
+        </mxCell>
+        <mxCell id="x13" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=20;fontFamily=Arial;fontColor=#182B47;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="Kafka native client" vertex="1">
+          <mxGeometry height="37" width="505.5" x="1060.5" y="203" as="geometry" />
+        </mxCell>
+        <mxCell id="x14" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=15;fontFamily=Arial;fontColor=#687D96;fontStyle=0;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="Producer / Consumer · TLS client certificate" vertex="1">
+          <mxGeometry height="28" width="620" x="1063" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="x16" parent="1" style="shape=image;verticalLabelPosition=bottom;verticalAlign=top;imageAspect=0;aspect=fixed;image=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgdmlld0JveD0iMCAwIDY0IDY0Ij48Y2lyY2xlIGN4PSIzMiIgY3k9IjMyIiByPSIyMyIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRDczRDMyIiBzdHJva2Utd2lkdGg9IjgiIHN0cm9rZS1kYXNoYXJyYXk9IjY3IDIwIDQ1IDIwIiB0cmFuc2Zvcm09InJvdGF0ZSgtMzAgMzIgMzIpIi8+PHBhdGggZD0iTTE4IDIwIEw0NiAyMCBNMTggNDQgTDQ2IDQ0IiBzdHJva2U9IiNENzNEMzIiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+;" value="" vertex="1">
+          <mxGeometry height="36" width="36" x="65" y="335" as="geometry" />
+        </mxCell>
+        <mxCell id="x17" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=21;fontFamily=Arial;fontColor=#213B60;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="RED HAT OPENSHIFT   /   PROJECT: midlleware" vertex="1">
+          <mxGeometry height="40" width="494" x="689.5" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="x18" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=14;fontFamily=Arial;fontColor=#667A94;fontStyle=0;align=right;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="Native Kubernetes workloads · No Operator" vertex="1">
+          <mxGeometry height="30" width="420" x="1330" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="x19" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=17;fontFamily=Arial;fontColor=#455C7A;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="02    OPENSHIFT ROUTES  ·  INGRESS" vertex="1">
+          <mxGeometry height="28" width="890" x="74" y="384" as="geometry" />
+        </mxCell>
+        <mxCell id="x20" parent="1" style="rounded=1;arcSize=16;whiteSpace=wrap;html=1;fillColor=#FFF4E5;strokeColor=#E7B766;strokeWidth=1.7;fontSize=15;fontFamily=Arial;fontColor=#1B2940;fontStyle=0;align=center;verticalAlign=middle;spacing=7;shadow=0;" value="" vertex="1">
+          <mxGeometry height="70" width="782" x="80" y="422" as="geometry" />
+        </mxCell>
+        <mxCell id="x21" parent="1" style="shape=image;verticalLabelPosition=bottom;verticalAlign=top;imageAspect=0;aspect=fixed;image=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgdmlld0JveD0iMCAwIDY0IDY0Ij48cGF0aCBkPSJNMzIgNkw1MyAxNFYzMWMwIDE2LTExIDI0LTIxIDI4QzIyIDU1IDExIDQ3IDExIDMxVjE0WiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQzM4MzI2IiBzdHJva2Utd2lkdGg9IjUiLz48cGF0aCBkPSJNMjMgMzJsNyA3IDEzLTE1IiBmaWxsPSJub25lIiBzdHJva2U9IiNDMzgzMjYiIHN0cm9rZS13aWR0aD0iNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+;" value="" vertex="1">
+          <mxGeometry height="40" width="40" x="103" y="436" as="geometry" />
+        </mxCell>
+        <mxCell id="x22" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=19;fontFamily=Arial;fontColor=#815319;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="Route  kafka-ui" vertex="1">
+          <mxGeometry height="37" width="600" x="166" y="421" as="geometry" />
+        </mxCell>
+        <mxCell id="x23" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=14;fontFamily=Arial;fontColor=#916B35;fontStyle=0;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="HTTPS :443  ·  Edge TLS  →  UI Service :8080" vertex="1">
+          <mxGeometry height="32" width="634" x="166" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="x24" parent="1" style="rounded=1;arcSize=16;whiteSpace=wrap;html=1;fillColor=#FFF4E5;strokeColor=#E7B766;strokeWidth=1.7;fontSize=15;fontFamily=Arial;fontColor=#1B2940;fontStyle=0;align=center;verticalAlign=middle;spacing=7;shadow=0;" value="" vertex="1">
+          <mxGeometry height="70" width="778" x="984" y="422" as="geometry" />
+        </mxCell>
+        <mxCell id="x25" parent="1" style="shape=image;verticalLabelPosition=bottom;verticalAlign=top;imageAspect=0;aspect=fixed;image=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgdmlld0JveD0iMCAwIDY0IDY0Ij48cGF0aCBkPSJNMzIgNkw1MyAxNFYzMWMwIDE2LTExIDI0LTIxIDI4QzIyIDU1IDExIDQ3IDExIDMxVjE0WiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQzM4MzI2IiBzdHJva2Utd2lkdGg9IjUiLz48cGF0aCBkPSJNMjMgMzJsNyA3IDEzLTE1IiBmaWxsPSJub25lIiBzdHJva2U9IiNDMzgzMjYiIHN0cm9rZS13aWR0aD0iNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+;" value="" vertex="1">
+          <mxGeometry height="40" width="40" x="1005" y="436" as="geometry" />
+        </mxCell>
+        <mxCell id="x26" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=19;fontFamily=Arial;fontColor=#815319;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="Route  kafka-poc-external" vertex="1">
+          <mxGeometry height="40" width="641.5" x="1058.5" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="x27" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=14;fontFamily=Arial;fontColor=#916B35;fontStyle=0;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="TCP :443  ·  TLS passthrough / SNI  →  :9094" vertex="1">
+          <mxGeometry height="31" width="670" x="1050" y="459" as="geometry" />
+        </mxCell>
+        <mxCell id="x28" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=17;fontFamily=Arial;fontColor=#455C7A;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="03    MIDDLEWARE LAYER  ·  4 DEPLOYMENTS / 4 PODS" vertex="1">
+          <mxGeometry height="32" width="1000" x="701" y="508" as="geometry" />
+        </mxCell>
+        <mxCell id="x29" parent="1" style="rounded=1;arcSize=19;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#DBE4EE;strokeWidth=1.5;fontSize=15;fontFamily=Arial;fontColor=#1B2940;fontStyle=0;align=center;verticalAlign=middle;spacing=7;shadow=1;" value="" vertex="1">
+          <mxGeometry height="250" width="277.5" x="76" y="555" as="geometry" />
+        </mxCell>
+        <mxCell id="x30" parent="1" style="shape=image;verticalLabelPosition=bottom;verticalAlign=top;imageAspect=0;aspect=fixed;image=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgdmlld0JveD0iMCAwIDY0IDY0Ij48cmVjdCB4PSI5IiB5PSIxMiIgd2lkdGg9IjQ2IiBoZWlnaHQ9IjQwIiByeD0iNyIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzM2QkQzIiBzdHJva2Utd2lkdGg9IjUiLz48cGF0aCBkPSJNOSAyNEg1NSBNMjEgMzRoMTIgTTIxIDQzaDIyIiBzdHJva2U9IiMzMzZCRDMiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+;" value="" vertex="1">
+          <mxGeometry height="44" width="44" x="96" y="575" as="geometry" />
+        </mxCell>
+        <mxCell id="x31" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=18;fontFamily=Arial;fontColor=#18304F;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="KAFBAT UI" vertex="1">
+          <mxGeometry height="30" width="148" x="154" y="573" as="geometry" />
+        </mxCell>
+        <mxCell id="x32" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=13;fontFamily=Arial;fontColor=#718098;fontStyle=0;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="UI &amp; administration" vertex="1">
+          <mxGeometry height="27" width="308" x="155" y="605" as="geometry" />
+        </mxCell>
+        <mxCell id="x33" parent="1" style="rounded=1;arcSize=13;whiteSpace=wrap;html=1;fillColor=#E7F6F0;strokeColor=#93CFB6;strokeWidth=1.2;fontSize=15;fontFamily=Arial;fontColor=#1B2940;fontStyle=0;align=center;verticalAlign=middle;spacing=7;shadow=0;" value="" vertex="1">
+          <mxGeometry height="57" width="180" x="131" y="655" as="geometry" />
+        </mxCell>
+        <mxCell id="x34" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=14;fontFamily=Arial;fontColor=#16624B;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="Service  kafka-ui" vertex="1">
+          <mxGeometry height="31" width="325" x="145" y="659" as="geometry" />
+        </mxCell>
+        <mxCell id="x35" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=12;fontFamily=Arial;fontColor=#487B6B;fontStyle=0;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="ClusterIP  •  :8080" vertex="1">
+          <mxGeometry height="26" width="148" x="145" y="684" as="geometry" />
+        </mxCell>
+        <mxCell id="x36" parent="1" style="rounded=1;arcSize=13;whiteSpace=wrap;html=1;fillColor=#EEEAFB;strokeColor=#B9AAE8;strokeWidth=1.2;fontSize=15;fontFamily=Arial;fontColor=#1B2940;fontStyle=0;align=center;verticalAlign=middle;spacing=7;shadow=0;" value="" vertex="1">
+          <mxGeometry height="59" width="180" x="131" y="725" as="geometry" />
+        </mxCell>
+        <mxCell id="x37" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=14;fontFamily=Arial;fontColor=#513B91;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="Deployment  kafka-ui" vertex="1">
+          <mxGeometry height="30" width="325" x="145" y="731" as="geometry" />
+        </mxCell>
+        <mxCell id="x38" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=12;fontFamily=Arial;fontColor=#7966A8;fontStyle=0;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="1 Pod   ·   replicas: 1" vertex="1">
+          <mxGeometry height="36" width="320" x="145" y="755" as="geometry" />
+        </mxCell>
+        <mxCell id="x39" edge="1" parent="1" source="x33" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#86A4C1;strokeWidth=1.5;endArrow=blockThin;endFill=1;exitX=0.5;entryX=0.5;exitY=1;entryY=0;" target="x36" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="x40" parent="1" style="rounded=1;arcSize=19;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#DBE4EE;strokeWidth=1.5;fontSize=15;fontFamily=Arial;fontColor=#1B2940;fontStyle=0;align=center;verticalAlign=middle;spacing=7;shadow=1;" value="" vertex="1">
+          <mxGeometry height="250" width="308" x="507" y="555" as="geometry" />
+        </mxCell>
+        <mxCell id="x41" parent="1" style="shape=image;verticalLabelPosition=bottom;verticalAlign=top;imageAspect=0;aspect=fixed;image=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgdmlld0JveD0iMCAwIDY0IDY0Ij48cGF0aCBkPSJNMjMgMTBIMTV2MTdsLTYgNSA2IDV2MTdoOCBNNDEgMTBoOHYxN2w2IDUtNiA1djE3aC04IiBmaWxsPSJub25lIiBzdHJva2U9IiMxNjhBOUIiIHN0cm9rZS13aWR0aD0iNSIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0zMCAyMmg0djIwaC00IiBzdHJva2U9IiMxNjhBOUIiIHN0cm9rZS13aWR0aD0iNCIvPjwvc3ZnPg==;" value="" vertex="1">
+          <mxGeometry height="44" width="44" x="527" y="575" as="geometry" />
+        </mxCell>
+        <mxCell id="x42" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=18;fontFamily=Arial;fontColor=#18304F;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="SCHEMA REGISTRY" vertex="1">
+          <mxGeometry height="30" width="313" x="546" y="573" as="geometry" />
+        </mxCell>
+        <mxCell id="x43" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=13;fontFamily=Arial;fontColor=#718098;fontStyle=0;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="Schemas · Avro / JSON / Protobuf" vertex="1">
+          <mxGeometry height="27" width="308" x="547" y="605" as="geometry" />
+        </mxCell>
+        <mxCell id="x44" parent="1" style="rounded=1;arcSize=13;whiteSpace=wrap;html=1;fillColor=#E7F6F0;strokeColor=#93CFB6;strokeWidth=1.2;fontSize=15;fontFamily=Arial;fontColor=#1B2940;fontStyle=0;align=center;verticalAlign=middle;spacing=7;shadow=0;" value="" vertex="1">
+          <mxGeometry height="57" width="243" x="529" y="655" as="geometry" />
+        </mxCell>
+        <mxCell id="x45" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=14;fontFamily=Arial;fontColor=#16624B;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="Service  schema-registry" vertex="1">
+          <mxGeometry height="30" width="325" x="541" y="659" as="geometry" />
+        </mxCell>
+        <mxCell id="x46" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=12;fontFamily=Arial;fontColor=#487B6B;fontStyle=0;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="ClusterIP  •  :8081" vertex="1">
+          <mxGeometry height="26" width="325" x="543" y="684" as="geometry" />
+        </mxCell>
+        <mxCell id="x47" parent="1" style="rounded=1;arcSize=13;whiteSpace=wrap;html=1;fillColor=#EEEAFB;strokeColor=#B9AAE8;strokeWidth=1.2;fontSize=15;fontFamily=Arial;fontColor=#1B2940;fontStyle=0;align=center;verticalAlign=middle;spacing=7;shadow=0;" value="" vertex="1">
+          <mxGeometry height="59" width="243" x="529" y="725" as="geometry" />
+        </mxCell>
+        <mxCell id="x48" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=14;fontFamily=Arial;fontColor=#513B91;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="Deployment  schema-registry" vertex="1">
+          <mxGeometry height="30" width="325" x="543" y="731" as="geometry" />
+        </mxCell>
+        <mxCell id="x49" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=12;fontFamily=Arial;fontColor=#7966A8;fontStyle=0;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="1 Pod   ·   replicas: 1" vertex="1">
+          <mxGeometry height="36" width="320" x="542" y="755" as="geometry" />
+        </mxCell>
+        <mxCell id="x50" edge="1" parent="1" source="x44" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#86A4C1;strokeWidth=1.5;endArrow=blockThin;endFill=1;exitX=0.5;entryX=0.5;exitY=1;entryY=0;" target="x47" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="x51" parent="1" style="rounded=1;arcSize=19;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#DBE4EE;strokeWidth=1.5;fontSize=15;fontFamily=Arial;fontColor=#1B2940;fontStyle=0;align=center;verticalAlign=middle;spacing=7;shadow=1;" value="" vertex="1">
+          <mxGeometry height="250" width="262" x="933" y="555" as="geometry" />
+        </mxCell>
+        <mxCell id="x52" parent="1" style="shape=image;verticalLabelPosition=bottom;verticalAlign=top;imageAspect=0;aspect=fixed;image=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgdmlld0JveD0iMCAwIDY0IDY0Ij48Y2lyY2xlIGN4PSIxNSIgY3k9IjE3IiByPSI4IiBmaWxsPSJub25lIiBzdHJva2U9IiM3QzVGRDYiIHN0cm9rZS13aWR0aD0iNSIvPjxjaXJjbGUgY3g9IjQ5IiBjeT0iMTgiIHI9IjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzdDNUZENiIgc3Ryb2tlLXdpZHRoPSI1Ii8+PGNpcmNsZSBjeD0iMzIiIGN5PSI0OCIgcj0iOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjN0M1RkQ2IiBzdHJva2Utd2lkdGg9IjUiLz48cGF0aCBkPSJNMjIgMTlMNDIgMTkgTTE5IDI1TDI4IDQxIE00NSAyNUwzNiA0MSIgc3Ryb2tlPSIjN0M1RkQ2IiBzdHJva2Utd2lkdGg9IjQiLz48L3N2Zz4=;" value="" vertex="1">
+          <mxGeometry height="44" width="44" x="953" y="575" as="geometry" />
+        </mxCell>
+        <mxCell id="x53" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=18;fontFamily=Arial;fontColor=#18304F;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="KAFKA CONNECT" vertex="1">
+          <mxGeometry height="30" width="313" x="960" y="573" as="geometry" />
+        </mxCell>
+        <mxCell id="x54" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=13;fontFamily=Arial;fontColor=#718098;fontStyle=0;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="Distributed Connect worker" vertex="1">
+          <mxGeometry height="27" width="308" x="961" y="605" as="geometry" />
+        </mxCell>
+        <mxCell id="x55" parent="1" style="rounded=1;arcSize=13;whiteSpace=wrap;html=1;fillColor=#E7F6F0;strokeColor=#93CFB6;strokeWidth=1.2;fontSize=15;fontFamily=Arial;fontColor=#1B2940;fontStyle=0;align=center;verticalAlign=middle;spacing=7;shadow=0;" value="" vertex="1">
+          <mxGeometry height="57" width="211" x="955" y="655" as="geometry" />
+        </mxCell>
+        <mxCell id="x56" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=14;fontFamily=Arial;fontColor=#16624B;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="Service  kafka-connect" vertex="1">
+          <mxGeometry height="31" width="325" x="973" y="659" as="geometry" />
+        </mxCell>
+        <mxCell id="x57" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=12;fontFamily=Arial;fontColor=#487B6B;fontStyle=0;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="ClusterIP  •  :8083" vertex="1">
+          <mxGeometry height="26" width="336" x="973" y="684" as="geometry" />
+        </mxCell>
+        <mxCell id="x58" parent="1" style="rounded=1;arcSize=13;whiteSpace=wrap;html=1;fillColor=#EEEAFB;strokeColor=#B9AAE8;strokeWidth=1.2;fontSize=15;fontFamily=Arial;fontColor=#1B2940;fontStyle=0;align=center;verticalAlign=middle;spacing=7;shadow=0;" value="" vertex="1">
+          <mxGeometry height="59" width="211" x="955" y="725" as="geometry" />
+        </mxCell>
+        <mxCell id="x59" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=14;fontFamily=Arial;fontColor=#513B91;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="Deployment  kafka-connect" vertex="1">
+          <mxGeometry height="29" width="336" x="973" y="731" as="geometry" />
+        </mxCell>
+        <mxCell id="x60" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=12;fontFamily=Arial;fontColor=#7966A8;fontStyle=0;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="1 Pod   ·   replicas: 1" vertex="1">
+          <mxGeometry height="26" width="350" x="973" y="755" as="geometry" />
+        </mxCell>
+        <mxCell id="x61" edge="1" parent="1" source="x55" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#86A4C1;strokeWidth=1.5;endArrow=blockThin;endFill=1;exitX=0.5;entryX=0.5;exitY=1;entryY=0;" target="x58" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="x62" parent="1" style="rounded=1;arcSize=19;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#DBE4EE;strokeWidth=1.5;fontSize=15;fontFamily=Arial;fontColor=#1B2940;fontStyle=0;align=center;verticalAlign=middle;spacing=7;shadow=1;" value="" vertex="1">
+          <mxGeometry height="250" width="243" x="1318" y="555" as="geometry" />
+        </mxCell>
+        <mxCell id="x63" parent="1" style="shape=image;verticalLabelPosition=bottom;verticalAlign=top;imageAspect=0;aspect=fixed;image=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgdmlld0JveD0iMCAwIDY0IDY0Ij48cGF0aCBkPSJNMTQgMTdoMTMgTTE0IDI3aDI3IE0xNCAzN2gzMyBNMTQgNDdoMjAiIHN0cm9rZT0iI0QyOEIzNCIgc3Ryb2tlLXdpZHRoPSI1IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNNDMgMTRsOSA5LTkgOSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRDI4QjM0IiBzdHJva2Utd2lkdGg9IjQiLz48L3N2Zz4=;" value="" vertex="1">
+          <mxGeometry height="44" width="44" x="1338" y="575" as="geometry" />
+        </mxCell>
+        <mxCell id="x64" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=18;fontFamily=Arial;fontColor=#18304F;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="REST PROXY" vertex="1">
+          <mxGeometry height="30" width="313" x="1359" y="573" as="geometry" />
+        </mxCell>
+        <mxCell id="x65" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=13;fontFamily=Arial;fontColor=#718098;fontStyle=0;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="HTTP API to Kafka" vertex="1">
+          <mxGeometry height="27" width="308" x="1360" y="605" as="geometry" />
+        </mxCell>
+        <mxCell id="x66" parent="1" style="rounded=1;arcSize=13;whiteSpace=wrap;html=1;fillColor=#E7F6F0;strokeColor=#93CFB6;strokeWidth=1.2;fontSize=15;fontFamily=Arial;fontColor=#1B2940;fontStyle=0;align=center;verticalAlign=middle;spacing=7;shadow=0;" value="" vertex="1">
+          <mxGeometry height="57" width="180" x="1340" y="655" as="geometry" />
+        </mxCell>
+        <mxCell id="x67" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=14;fontFamily=Arial;fontColor=#16624B;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="Service  kafka-rest" vertex="1">
+          <mxGeometry height="31" width="325" x="1354" y="659" as="geometry" />
+        </mxCell>
+        <mxCell id="x68" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=12;fontFamily=Arial;fontColor=#487B6B;fontStyle=0;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="ClusterIP  •  :8082" vertex="1">
+          <mxGeometry height="26" width="336" x="1354" y="684" as="geometry" />
+        </mxCell>
+        <mxCell id="x69" parent="1" style="rounded=1;arcSize=13;whiteSpace=wrap;html=1;fillColor=#EEEAFB;strokeColor=#B9AAE8;strokeWidth=1.2;fontSize=15;fontFamily=Arial;fontColor=#1B2940;fontStyle=0;align=center;verticalAlign=middle;spacing=7;shadow=0;" value="" vertex="1">
+          <mxGeometry height="59" width="180" x="1340" y="725" as="geometry" />
+        </mxCell>
+        <mxCell id="x70" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=14;fontFamily=Arial;fontColor=#513B91;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="Deployment  kafka-rest" vertex="1">
+          <mxGeometry height="29" width="336" x="1354" y="731" as="geometry" />
+        </mxCell>
+        <mxCell id="x71" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=12;fontFamily=Arial;fontColor=#7966A8;fontStyle=0;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="1 Pod   ·   replicas: 1" vertex="1">
+          <mxGeometry height="26" width="336" x="1354" y="755" as="geometry" />
+        </mxCell>
+        <mxCell id="x72" edge="1" parent="1" source="x66" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#86A4C1;strokeWidth=1.5;endArrow=blockThin;endFill=1;exitX=0.5;entryX=0.5;exitY=1;entryY=0;" target="x69" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="x73" parent="1" style="rounded=1;arcSize=19;whiteSpace=wrap;html=1;fillColor=#EAF2FE;strokeColor=#9DBDEA;strokeWidth=2;fontSize=15;fontFamily=Arial;fontColor=#1B2940;fontStyle=0;align=center;verticalAlign=middle;spacing=7;shadow=0;" value="" vertex="1">
+          <mxGeometry height="287" width="1700" x="74" y="837" as="geometry" />
+        </mxCell>
+        <mxCell id="x74" parent="1" style="shape=image;verticalLabelPosition=bottom;verticalAlign=top;imageAspect=0;aspect=fixed;image=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgdmlld0JveD0iMCAwIDY0IDY0Ij48cGF0aCBkPSJNMTggMTNWNTAgTTE4IDI3TDQzIDE0IE0xOCAzNUw0MyA0OSIgc3Ryb2tlPSIjMkE0RDhBIiBzdHJva2Utd2lkdGg9IjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxjaXJjbGUgY3g9IjE4IiBjeT0iMTMiIHI9IjciIGZpbGw9IiMyQTREOEEiLz48Y2lyY2xlIGN4PSIxOCIgY3k9IjM1IiByPSI3IiBmaWxsPSIjMkE0RDhBIi8+PGNpcmNsZSBjeD0iMTgiIGN5PSI1MSIgcj0iNyIgZmlsbD0iIzJBNEQ4QSIvPjxjaXJjbGUgY3g9IjQ1IiBjeT0iMTMiIHI9IjciIGZpbGw9IiMyQTREOEEiLz48Y2lyY2xlIGN4PSI0NSIgY3k9IjUwIiByPSI3IiBmaWxsPSIjMkE0RDhBIi8+PC9zdmc+;" value="" vertex="1">
+          <mxGeometry height="39" width="39" x="95" y="849" as="geometry" />
+        </mxCell>
+        <mxCell id="x75" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=19;fontFamily=Arial;fontColor=#193E74;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="04    APACHE KAFKA  /  KRaft CONTROL PLANE + DATA PLANE" vertex="1">
+          <mxGeometry height="37" width="570.5" x="689.5" y="844" as="geometry" />
+        </mxCell>
+        <mxCell id="x76" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=16;fontFamily=Arial;fontColor=#2860A7;fontStyle=1;align=right;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="1 StatefulSet   ·   1 broker Pod" vertex="1">
+          <mxGeometry height="29" width="350" x="1389" y="852" as="geometry" />
+        </mxCell>
+        <mxCell id="x77" parent="1" style="rounded=1;arcSize=13;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#89B7E6;strokeWidth=1.2;fontSize=15;fontFamily=Arial;fontColor=#1B2940;fontStyle=0;align=center;verticalAlign=middle;spacing=7;shadow=0;" value="" vertex="1">
+          <mxGeometry height="66" width="470" x="95" y="901" as="geometry" />
+        </mxCell>
+        <mxCell id="x78" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=16;fontFamily=Arial;fontColor=#265D9E;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="Service  kafka-poc-bootstrap" vertex="1">
+          <mxGeometry height="36" width="455" x="108" y="906" as="geometry" />
+        </mxCell>
+        <mxCell id="x79" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=13;fontFamily=Arial;fontColor=#6484A6;fontStyle=0;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="ClusterIP  ·  :9092  ·  INTERNAL" vertex="1">
+          <mxGeometry height="27" width="429" x="112" y="933" as="geometry" />
+        </mxCell>
+        <mxCell id="x80" parent="1" style="rounded=1;arcSize=13;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#89B7E6;strokeWidth=1.2;fontSize=15;fontFamily=Arial;fontColor=#1B2940;fontStyle=0;align=center;verticalAlign=middle;spacing=7;shadow=0;" value="" vertex="1">
+          <mxGeometry height="66" width="470" x="685" y="901" as="geometry" />
+        </mxCell>
+        <mxCell id="x81" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=16;fontFamily=Arial;fontColor=#265D9E;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="Service  kafka-poc-headless" vertex="1">
+          <mxGeometry height="29" width="438" x="699" y="901" as="geometry" />
+        </mxCell>
+        <mxCell id="x82" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=13;fontFamily=Arial;fontColor=#6484A6;fontStyle=0;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="Headless DNS  ·  :9092 / :9093" vertex="1">
+          <mxGeometry height="27" width="448" x="701" y="933" as="geometry" />
+        </mxCell>
+        <mxCell id="x83" parent="1" style="rounded=1;arcSize=13;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#89B7E6;strokeWidth=1.2;fontSize=15;fontFamily=Arial;fontColor=#1B2940;fontStyle=0;align=center;verticalAlign=middle;spacing=7;shadow=0;" value="" vertex="1">
+          <mxGeometry height="66" width="470" x="1274" y="901" as="geometry" />
+        </mxCell>
+        <mxCell id="x84" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=16;fontFamily=Arial;fontColor=#265D9E;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="Service  kafka-poc-external" vertex="1">
+          <mxGeometry height="36" width="438" x="1292" y="906" as="geometry" />
+        </mxCell>
+        <mxCell id="x85" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=13;fontFamily=Arial;fontColor=#6484A6;fontStyle=0;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="ClusterIP  ·  :9094  ·  SSL / mTLS" vertex="1">
+          <mxGeometry height="27" width="438" x="1291" y="933" as="geometry" />
+        </mxCell>
+        <mxCell id="x86" parent="1" style="rounded=1;arcSize=17;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#5086C4;strokeWidth=2.7;fontSize=15;fontFamily=Arial;fontColor=#1B2940;fontStyle=0;align=center;verticalAlign=middle;spacing=7;shadow=1;" value="" vertex="1">
+          <mxGeometry height="109" width="1063" x="391" y="994" as="geometry" />
+        </mxCell>
+        <mxCell id="x87" parent="1" style="shape=image;verticalLabelPosition=bottom;verticalAlign=top;imageAspect=0;aspect=fixed;image=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgdmlld0JveD0iMCAwIDY0IDY0Ij48cGF0aCBkPSJNMTggMTNWNTAgTTE4IDI3TDQzIDE0IE0xOCAzNUw0MyA0OSIgc3Ryb2tlPSIjMjQ0RjkxIiBzdHJva2Utd2lkdGg9IjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxjaXJjbGUgY3g9IjE4IiBjeT0iMTMiIHI9IjciIGZpbGw9IiMyNDRGOTEiLz48Y2lyY2xlIGN4PSIxOCIgY3k9IjM1IiByPSI3IiBmaWxsPSIjMjQ0RjkxIi8+PGNpcmNsZSBjeD0iMTgiIGN5PSI1MSIgcj0iNyIgZmlsbD0iIzI0NEY5MSIvPjxjaXJjbGUgY3g9IjQ1IiBjeT0iMTMiIHI9IjciIGZpbGw9IiMyNDRGOTEiLz48Y2lyY2xlIGN4PSI0NSIgY3k9IjUwIiByPSI3IiBmaWxsPSIjMjQ0RjkxIi8+PC9zdmc+;" value="" vertex="1">
+          <mxGeometry height="62" width="62" x="421" y="1015" as="geometry" />
+        </mxCell>
+        <mxCell id="x88" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=20;fontFamily=Arial;fontColor=#214879;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="StatefulSet  kafka-poc  →  Pod  kafka-poc-0" vertex="1">
+          <mxGeometry height="36" width="890" x="503" y="1004" as="geometry" />
+        </mxCell>
+        <mxCell id="x89" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=16;fontFamily=Arial;fontColor=#325E91;fontStyle=0;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="BROKER + CONTROLLER KRaft  ·  Node ID 1  ·  Confluent UBI 9" vertex="1">
+          <mxGeometry height="37" width="867" x="503" y="1033" as="geometry" />
+        </mxCell>
+        <mxCell id="x90" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=14;fontFamily=Arial;fontColor=#5E7490;fontStyle=0;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="INTERNAL :9092 (PLAINTEXT)      CONTROLLER :9093      EXTERNAL :9094 (mTLS)" vertex="1">
+          <mxGeometry height="30" width="893" x="503" y="1070" as="geometry" />
+        </mxCell>
+        <mxCell id="x91" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=14;fontFamily=Arial;fontColor=#455C7A;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="05    PERSISTENCE &amp; SECRETS" vertex="1">
+          <mxGeometry height="42" width="789" x="74" y="1168" as="geometry" />
+        </mxCell>
+        <mxCell id="x92" parent="1" style="rounded=1;arcSize=13;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#D6E0EB;strokeWidth=1.2;fontSize=15;fontFamily=Arial;fontColor=#1B2940;fontStyle=0;align=center;verticalAlign=middle;spacing=7;shadow=0;" value="" vertex="1">
+          <mxGeometry height="60" width="540" x="395" y="1159" as="geometry" />
+        </mxCell>
+        <mxCell id="x93" parent="1" style="shape=image;verticalLabelPosition=bottom;verticalAlign=top;imageAspect=0;aspect=fixed;image=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgdmlld0JveD0iMCAwIDY0IDY0Ij48ZWxsaXBzZSBjeD0iMzIiIGN5PSIxNSIgcng9IjIyIiByeT0iOSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRTQ5MTIwIiBzdHJva2Utd2lkdGg9IjQiLz48cGF0aCBkPSJNMTAgMTV2MzNjMCAxMyA0NCAxMyA0NCAwVjE1IE0xMCAzMWMwIDEzIDQ0IDEzIDQ0IDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0U0OTEyMCIgc3Ryb2tlLXdpZHRoPSI0Ii8+PC9zdmc+;" value="" vertex="1">
+          <mxGeometry height="40" width="40" x="405" y="1169" as="geometry" />
+        </mxCell>
+        <mxCell id="x94" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=16;fontFamily=Arial;fontColor=#243E5E;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="PVC  kafka-data-kafka-poc-0" vertex="1">
+          <mxGeometry height="32" width="460" x="462" y="1168" as="geometry" />
+        </mxCell>
+        <mxCell id="x95" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=13;fontFamily=Arial;fontColor=#708198;fontStyle=0;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="AWS EBS gp3  ·  10 GiB  ·  RWO" vertex="1">
+          <mxGeometry height="32" width="470" x="462" y="1187" as="geometry" />
+        </mxCell>
+        <mxCell id="x96" parent="1" style="rounded=1;arcSize=13;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#D6E0EB;strokeWidth=1.2;fontSize=15;fontFamily=Arial;fontColor=#1B2940;fontStyle=0;align=center;verticalAlign=middle;spacing=7;shadow=0;" value="" vertex="1">
+          <mxGeometry height="60" width="730" x="959" y="1159" as="geometry" />
+        </mxCell>
+        <mxCell id="x97" parent="1" style="shape=image;verticalLabelPosition=bottom;verticalAlign=top;imageAspect=0;aspect=fixed;image=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgdmlld0JveD0iMCAwIDY0IDY0Ij48cGF0aCBkPSJNMzIgNkw1MyAxNFYzMWMwIDE2LTExIDI0LTIxIDI4QzIyIDU1IDExIDQ3IDExIDMxVjE0WiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNjE4QkFFIiBzdHJva2Utd2lkdGg9IjUiLz48cGF0aCBkPSJNMjMgMzJsNyA3IDEzLTE1IiBmaWxsPSJub25lIiBzdHJva2U9IiM2MThCQUUiIHN0cm9rZS13aWR0aD0iNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+;" value="" vertex="1">
+          <mxGeometry height="42" width="42" x="973" y="1168" as="geometry" />
+        </mxCell>
+        <mxCell id="x98" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=16;fontFamily=Arial;fontColor=#243E5E;fontStyle=1;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="Secrets:  Cluster ID  ·  Broker TLS  ·  Kafbat login" vertex="1">
+          <mxGeometry height="32" width="647" x="1017" y="1167" as="geometry" />
+        </mxCell>
+        <mxCell id="x99" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=13;fontFamily=Arial;fontColor=#708198;fontStyle=0;align=left;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="TLS self-signed CA (POC, 30 days)  ·  Never stored in Git" vertex="1">
+          <mxGeometry height="29" width="641.5" x="1019.75" y="1190" as="geometry" />
+        </mxCell>
+        <mxCell id="x100" edge="1" parent="1" source="x7" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#E3A44B;strokeWidth=2.5;endArrow=blockThin;endFill=1;exitX=0.516;entryX=0.5;exitY=0.989;entryY=0;exitDx=0;exitDy=0;exitPerimeter=0;" target="x20" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="x101" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#E3A44B;strokeWidth=2.5;endArrow=blockThin;endFill=1;entryX=0.5;entryY=0;" target="x24" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1373" y="290" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="x102" edge="1" parent="1" source="x20" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#E3A44B;strokeWidth=2.2;endArrow=blockThin;endFill=1;exitX=0.5;entryX=0.5;exitY=1;entryY=1;exitDx=0;exitDy=0;entryDx=0;entryDy=0;" target="x34" value="">
+          <mxGeometry relative="1" x="0.2116" as="geometry">
+            <Array as="points">
+              <mxPoint x="471" y="690" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="x103" edge="1" parent="1" source="x24" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#D7A459;strokeWidth=2.5;endArrow=blockThin;endFill=1;exitX=0.78;entryX=0.5;exitY=1;entryY=0;" target="x83" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1590.8" y="520" />
+              <mxPoint x="1590" y="820" />
+              <mxPoint x="1509" y="820" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="x104" edge="1" parent="1" source="x77" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4B87C8;strokeWidth=2.2;endArrow=blockThin;endFill=1;exitX=0.5;entryX=0;exitY=1;entryY=0.5;entryDx=0;entryDy=0;" target="x86" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="x105" edge="1" parent="1" source="x80" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7EACDA;strokeWidth=1.8;endArrow=blockThin;endFill=1;dashed=1;dashPattern=6 5;exitX=0.5;entryX=0.5;exitY=1;entryY=0;" target="x86" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="x106" edge="1" parent="1" source="x83" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4B87C8;strokeWidth=2.2;endArrow=blockThin;endFill=1;exitX=0.5;entryX=1;exitY=1;entryY=0.5;entryDx=0;entryDy=0;" target="x86" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="x107" parent="1" style="rounded=1;arcSize=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;strokeWidth=0;fontSize=14;fontFamily=Arial;fontColor=#64768F;fontStyle=0;align=center;verticalAlign=middle;spacing=7;shadow=0;overflow=hidden;" value="Internal applications → kafka-poc-bootstrap:9092     |     Kafbat → Schema Registry:8081 &amp; Connect:8083     |     REST Proxy → Schema Registry:8081" vertex="1">
+          <mxGeometry height="39" width="1670" x="78" y="805" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
