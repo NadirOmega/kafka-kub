@@ -1,0 +1,4 @@
+{
+  "bootstrap_servers": "REPLACE_WITH_ROUTE_HOST:443",
+  "topic": "python-test"
+}
