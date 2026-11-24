@@ -1,0 +1,13 @@
+certificates/*
+!certificates/.gitkeep
+config.local.json
+*.key
+*.crt
+*.pem
+*.p12
+*.pfx
+*.jks
+*.properties
+__pycache__/
+.venv/
+.env
